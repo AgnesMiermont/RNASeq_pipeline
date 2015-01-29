@@ -14,7 +14,7 @@ getArgs <- function() {
 ########################## read arguments
 dexseq.compute <- TRUE
 
-BPPARAM = MulticoreParam(workers=2)
+BPPARAM = MulticoreParam(workers=8)
 
 annotation.file <- '/cluster/project8/vyp/vincent/Software/RNASeq_pipeline/bundle/Tc1_mouse/tc1_annotations.tab'
 iFolder <- '/scratch2/vyp-scratch2/IoN_RNASeq/Frances/processed'
