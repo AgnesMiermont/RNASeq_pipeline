@@ -21,3 +21,13 @@ Notes for installation of DEXSeq:
 scl enable devtoolset-1.1 'bash'
 ```
 and then run R
+
+# Input format
+
+The key input is a table in plain text format that contains one row per sample, with the header line:
+```
+sample f1 f2 condition
+```
+Assuming that condition is what you want to run the differential expression analysis on.
+You also need to specify the input folder, so that the fastq can be found at ${iFolder}/${f1} and ${iFolder}/${f2}.
+Note that f1 and f2 can specify subfolders themselves. Also a species parameter and and output folder.
