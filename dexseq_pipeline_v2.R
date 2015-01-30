@@ -163,7 +163,7 @@ for (condition in list.conditions) {
     logname <- grep(names(res), pattern = 'log2fold', value = TRUE)
     res.clean <- as(res[, c('groupID', 'featureID', 'exonBaseMean', logname, 'dispersion', 'stat', 'pvalue')], 'data.frame')
     names(res.clean)<- c("EnsemblID", "exonID", "meanBase", "log2FoldChange", "dispersion", "stat", "pvalue")
-
+    
     res.clean$FDR <- p.adjust(res.clean$pvalue, method = 'fdr')    
     res.clean$chromosome <- as.character(seqnames( res$genomicData))
     res.clean$exon.start <- start(res$genomicData)
@@ -171,9 +171,10 @@ for (condition in list.conditions) {
 
 
     res.clean$external_gene_id <- annotation$external_gene_id[ match(res.clean$EnsemblID, table = annotation$EnsemblID) ]
+    res.clean <- res.clean[, c('external_gene_id', "EnsemblID", "exonID", "meanBase", "log2FoldChange", "dispersion", "stat", "pvalue", "FDR", "chromosome", "exon.start", "exon.end")]  ### reorder the names nicely
+
     if ('strand' %in% names(annotation)) res.clean$strand <- annotation$strand[ match(res.clean$EnsemblID, table = annotation$EnsemblID) ] ## add strand if available
-    #res.clean <- merge(res.clean, annotation[, c('EnsemblID', 'external_gene_id', 'chromosome_name', 'start_position', 'end_position', 'strand')], by = 'EnsemblID')
-    res.clean <- res.clean[ order(res.clean$pvalue),]  
+    res.clean <- res.clean[ order(res.clean$pvalue),]  ##reorder the rows
     
     write.csv(x = res.clean,
               file=paste(loc.dexseq.folder, "/", code, "_", loc.code, "_SignificantExons.csv", sep = ''),
@@ -233,7 +234,7 @@ for (condition in list.conditions) {
   dev.off()
   
   message('Done with ', condition)
-  rm('DexSeqExons.loc')
+  rm(list = c('DexSeqExons.loc', 'res', 'res.clean'))
   gc()
 
 }
